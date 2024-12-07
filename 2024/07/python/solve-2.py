@@ -1,22 +1,8 @@
 #!/usr/bin/python
-
-import itertools, operator
-from typing import List
-
+import itertools
 n=int(input())
 
 s=0
-
-def expbuild(exps, accu):
-    return (exps if not accu else expbuild(exps[1:], accu+exps.jon))
-
-def leftjoin(e1:str, e2:str) -> str: # '22+', '32*'; '(22+32)+', '67+'
-    return ('(' +
-            e1 + 
-            (e2[:-1] if e2[-1] in '+*' else e2 )+
-            ')' +
-            (e2[-1] if e2[-1] in '+*' else ''))
-
 
 def stackmachine(accu:int, last_op, # init with: accu=0, op=+
                  rest:tuple[tuple[int,int]]): # ((1,'+'), (3,'|'), (3,None))
