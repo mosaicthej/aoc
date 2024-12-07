@@ -22,13 +22,16 @@ class page:
     def __init__(self, a:int) -> None:
         self.p = a
     def __lt__(self, other): # self need to come before other
-        return ((not prevRules.get(other.p) or  # self is before other
-                 self.p in prevRules.get(other.p)) and
+        return ((not prevRules.get(other.p) or
+                 self.p in prevRules.get(other.p)) and # self is before other
                 (not postRules.get(self.p) or
-                 other.p in postRules.get(self.p)) and
-                ( (not prevRules.get(other.p)) and (not postRules.get(self.p)) and
-                 (not other < self)) # check if the rule already confilcts
-                ) # other is after self
+                 other.p in postRules.get(self.p)) and # other is after self
+                (not prevRules.get(self.p) or
+                 not other.p in prevRules.get(self.p)) and # other is not before self
+                (not postRules.get(other.p) or
+                 not self.p in postRules.get(other.p)) # self is not after other
+                )
+
     def __eq__(self, other) -> bool: return self.p==other.p
     def get_p(self): return self.p
 
