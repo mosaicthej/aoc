@@ -3,6 +3,7 @@
 
 from collections.abc import Generator
 from typing import Optional
+import itertools
 
 
 def is_compact(s:str) -> bool:
@@ -68,4 +69,16 @@ file_blks = ((i//2, int(s0[i]),) for i in range(len(s0)) if (not i%2))
 defragged = (next(file_blks),)
 defragged = defrag(tuple(file_blks), defragged, free_blks, f0)
 
-    
+print(defragged)
+# defragged is the tuple of ((fd, size))
+
+arith_sum = lambda x0,xn,n:(x0+xn)*n/2
+# given a partial frag: (fd, size) and current blk, 
+# return the parital checksum: ex: (4,3),9: 4*(9+10+11)
+partial_sum = lambda frag,bn: frag[0] * arith_sum(bn,bn+frag[1]-1,frag[1])
+
+sizes = (size for (_,size) in defragged)
+start_inds = itertools.accumulate(sizes, initial=0)
+cksm_ids = zip(defragged, start_inds)
+
+print(sum(map(lambda p: partial_sum(p[0],p[1]), cksm_ids)))
