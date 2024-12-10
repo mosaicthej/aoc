@@ -4,6 +4,38 @@
 from collections.abc import Generator
 from typing import Optional
 import itertools
+import sys
+
+class TailRecurseException(Exception):  # Update to inherit from Exception
+    def __init__(self, args, kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+def tail_call_optimized(g):
+    """
+    This function decorates a function with tail call
+    optimization. It does this by throwing an exception
+    if it is its own grandparent, and catching such
+    exceptions to fake the tail call optimization.
+    
+    This function fails if the decorated
+    function recurses in a non-tail context.
+    """
+    def func(*args, **kwargs):
+        f = sys._getframe()
+        if f.f_back and f.f_back.f_back \
+                and f.f_back.f_back.f_code == f.f_code:
+            raise TailRecurseException(args, kwargs)
+        else:
+            while True:  # Replace 1 with True for better readability
+                try:
+                    return g(*args, **kwargs)
+                except TailRecurseException as e:  # Update exception syntax
+                    args = e.args
+                    kwargs = e.kwargs
+    func.__doc__ = g.__doc__
+    return func
+
 
 
 def is_compact(s:str) -> bool:
@@ -16,6 +48,7 @@ def is_compact(s:str) -> bool:
     return s[f0:]=='.'*(n-f0)
 
 Fblk = tuple[int, int] # (fd, blks)
+
 def take_nblocks(ns: tuple[Fblk], accu: tuple[Fblk], blk:int
                  ) -> tuple[tuple[Fblk], tuple[Fblk]]:
     '''
@@ -41,7 +74,7 @@ def take_nblocks(ns: tuple[Fblk], accu: tuple[Fblk], blk:int
     else: naccu = accu + (to_move,) # prepend
     return take_nblocks(tuple(nns), naccu, blk-blk_mov)
 
-
+@tail_call_optimized
 def defrag(s:tuple[Fblk], r:tuple[Fblk], 
            fblks:Generator[int,None,None], nn:int) -> tuple[Fblk]:
     '''
@@ -55,10 +88,10 @@ def defrag(s:tuple[Fblk], r:tuple[Fblk],
         - fblks would yield: 2,4
     '''
     # if no free block left, then defrag is done....
-    if not nn or not s: return r # r is the result str
+    if nn is None or not s: return r # r is the result str
     ns, nrr = take_nblocks(s, tuple(), nn) # rest of mem, addition to build to r
     nnn = next(fblks, None)
-    nr =  r + nrr + (ns[0],) if nnn else r+ns+nrr # building....
+    nr =  r + nrr + (ns[0],) if not nnn is None else r+ns+nrr # building....
     return defrag(ns[1:], nr, fblks, nnn) # recurse
 
 s0 = input() # input
