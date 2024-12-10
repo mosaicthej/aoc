@@ -112,11 +112,13 @@ fst = nextState(mat, guard_currpos, '^', tuple(), False)
 
 print(sum(map(lambda x: x.count('X'), fst[0])))
 
-path = (p[0] for p in fst[1][1:])
+path = set(p[0] for p in fst[1][1:]) # [1:] to slice off 'myself'
 
-universe = [
+universe = (
         mat[:stn[0]] +
         [mat[stn[0]][:stn[1]] + '#' + mat[stn[0]][stn[1]+1:]] +
         mat[stn[0]+1:] for stn in path
-    ]
-runs = (nextState(u
+        )
+
+runs = ( nextState(m, guard_currpos, '^', tuple(), False) for m in universe )
+print(sum(r[2] for r in runs))
