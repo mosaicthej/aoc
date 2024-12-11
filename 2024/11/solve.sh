@@ -10,23 +10,22 @@ fi
 N=$1
 
 # Create a temporary file to store intermediate results
-# temp_file=$(mktemp)
-touch tempbuf
+temp_file=$(mktemp)
 
 wd=$(dirname "$0")
 # Read a line of numbers from stdin and save it to the temp file
-cat $wd/input > "tempbuf"
-
+cat $wd/input > "$temp_file"
+#
 # Loop N times
 for ((i = 0; i < N; i++)); do
   # Process the file content with ./a.out and overwrite the temp file
-  ./blink < "tempbuf" > "tempbuf1" && mv "tempbuf1" "tempbuf"
-  echo "blink $i...."
+  echo "working on blink $i..."
+  ./blink < "$temp_file" > "$temp_file.tmp" && mv "$temp_file.tmp" "$temp_file"
 done
 
 # Print the final output
-cat "tempbuf"
-
-wc -w "tempbuf"
+cat "$temp_file"
+# Print the final output
+wc -w "$temp_file"
 # Clean up the temporary file
 

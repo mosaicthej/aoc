@@ -1,6 +1,6 @@
 2024/03/input-m
 2024/03/inputr
-2024/03/lex.yy.c
+# 2024/03/lex.yy.c
 2024/03/remover
 2024/03/mul
 2024/03/mul.c
@@ -9,4 +9,5 @@
 2024/11/tempbuf1
 2024/11/blink
 2024/11/blink.c
-2024/11/lex.yy.c
+# 2024/11/lex.yy.c
+# do not ignore lex.yy.c since some system does not have flex
