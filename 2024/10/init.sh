@@ -7,7 +7,7 @@ wd=$(dirname "$0")
 n=$(wc $wd/input -l  | awk '{ print $1 }')
 m=$(head -n 1 $wd/input | wc -c)
 m=$(( $m-1 ))
-echo $n $m
+echo $n,$m
 cat $wd/input
 
 
