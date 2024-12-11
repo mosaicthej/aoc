@@ -19,6 +19,7 @@ input="$line"
 for ((i = 0; i < N; i++)); do
   # Feed the input to ./a.out and capture the output
   input=$(echo "$input" | ./a.out)
+  echo working on $i th blink...
 done
 
 # Print the final output
