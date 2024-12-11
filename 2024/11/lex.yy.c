@@ -747,6 +747,7 @@ YY_RULE_SETUP
                     strcpy(h1, yytext+(len/2));
 
                     n0 = atoll(h0); n1 = atoll(h1);
+                    memset(h0,0,1024);memset(h1,0,1024);
 
                     printf("%llu %llu", n0, n1);}
                 else
@@ -755,15 +756,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "blink01.lex"
+#line 26 "blink01.lex"
 ECHO;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 26 "blink01.lex"
+#line 27 "blink01.lex"
 ECHO;
 	YY_BREAK
-#line 766 "lex.yy.c"
+#line 767 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1768,7 +1769,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 26 "blink01.lex"
+#line 27 "blink01.lex"
 
 
 int main(){
