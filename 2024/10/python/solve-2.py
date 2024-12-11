@@ -15,7 +15,6 @@ def posneigh(a:Pos)->tuple[Pos]:
 
 trailheads = tuple((r,c) for r in range(n) for c in range(m) if (not mat[r][c]))
 
-ends = []
 def walkTrail(start:Pos, iheight:int)->int:
     ''' walk a trail and return the scores
     start: current location,
@@ -23,22 +22,10 @@ def walkTrail(start:Pos, iheight:int)->int:
     
     return 0 the score of this path'''
     print(start, iheight)
-    if iheight == 9: 
-        if not start in ends: 
-            ends.append(start)
-            return 1
-        else: return 0 # is visited already
+    if iheight == 9: return 1
     nextsteps = tuple(filter(
         lambda p: slopegood(start,p), posneigh(start)))
     if not nextsteps: return 0
     return sum((walkTrail(p, iheight+1) for p in nextsteps))
 
 print(sum(walkTrail(th, 0) for th in trailheads))
-c=0
-for th in trailheads:
-    ends = []
-    s = walkTrail(th,0)
-    print(s, ends)
-    c+=s
-    
-print(c)
