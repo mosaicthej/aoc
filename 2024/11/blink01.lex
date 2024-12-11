@@ -17,6 +17,7 @@ DIGITS  [0-9]+
                     strcpy(h1, yytext+(len/2));
 
                     n0 = atoll(h0); n1 = atoll(h1);
+                    memset(h0,0,1024);memset(h1,0,1024);
 
                     printf("%llu %llu", n0, n1);}
                 else
