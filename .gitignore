@@ -1,5 +1,6 @@
 # note, flex generated c code should always be removed
 # even for system without flex, can always build flex locally and then build the c
+helpers/*
 2024/03/input-m
 2024/03/inputr
 2024/03/lex.yy.c
