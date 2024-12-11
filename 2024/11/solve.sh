@@ -9,20 +9,24 @@ fi
 # Read N from the command-line argument
 N=$1
 
-# Read a line of numbers from stdin
-read -r line
+# Create a temporary file to store intermediate results
+# temp_file=$(mktemp)
+touch tempbuf
 
-# Initialize the input for ./a.out with the input from stdin
-input="$line"
+wd=$(dirname "$0")
+# Read a line of numbers from stdin and save it to the temp file
+cat $wd/input > "tempbuf"
 
 # Loop N times
 for ((i = 0; i < N; i++)); do
-  # Feed the input to ./a.out and capture the output
-  input=$(echo "$input" | ./a.out)
-  echo working on $i th blink...
+  # Process the file content with ./a.out and overwrite the temp file
+  ./blink < "tempbuf" > "tempbuf1" && mv "tempbuf1" "tempbuf"
+  echo "blink $i...."
 done
 
 # Print the final output
-echo "$input"
-echo "$input" | wc -w
+cat "tempbuf"
+
+wc -w "tempbuf"
+# Clean up the temporary file
 
