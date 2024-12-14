@@ -170,6 +170,5 @@ for r in range(R):
             print("perm is", len(perims), "area is", area)
             costs += len(perims) * area
             
-            
 print("DONE")
 print(costs)
